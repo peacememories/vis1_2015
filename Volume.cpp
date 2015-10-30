@@ -31,37 +31,37 @@ void Voxel::setValue(const float value)
 	m_Value = value;
 }
 
-const float Voxel::getValue() const
+float Voxel::getValue() const
 {
 	return m_Value;
 };
 
-const bool Voxel::operator==(const Voxel &other) const
+bool Voxel::operator==(const Voxel &other) const
 {
 	return (getValue() == other.getValue());
 };
 
-const bool Voxel::operator!=(const Voxel &other) const
+bool Voxel::operator!=(const Voxel &other) const
 {
 	return !(*this == other);
 };
 
-const bool Voxel::operator>(const Voxel &other) const
+bool Voxel::operator>(const Voxel &other) const
 {
 	return getValue() > other.getValue();
 };
 
-const bool Voxel::operator>=(const Voxel &other) const
+bool Voxel::operator>=(const Voxel &other) const
 {
 	return getValue() >= other.getValue();
 };
 
-const bool Voxel::operator<(const Voxel &other) const
+bool Voxel::operator<(const Voxel &other) const
 {
 	return getValue() < other.getValue();
 };
 
-const bool Voxel::operator<=(const Voxel &other) const
+bool Voxel::operator<=(const Voxel &other) const
 {
 	return getValue() <= other.getValue();
 };
@@ -147,22 +147,22 @@ const Voxel* Volume::voxels() const
 	return &(m_Voxels.front());
 };
 
-const int Volume::width() const
+int Volume::width() const
 {
 	return m_Width;
 };
 
-const int Volume::height() const
+int Volume::height() const
 {
 	return m_Height;
 };
 
-const int Volume::depth() const
+int Volume::depth() const
 {
 	return m_Depth;
 };
 
-const int Volume::size() const
+int Volume::size() const
 {
 	return m_Size;
 };
@@ -213,8 +213,7 @@ bool Volume::loadFromFile(QString filename, QProgressBar* progressBar)
 
 	// compute dimensions
 	int slice = m_Width * m_Height;
-	m_Size = slice * m_Depth;
-	int test = INT_MAX;
+    m_Size = slice * m_Depth;
 	m_Voxels.resize(m_Size);
 
 

@@ -25,17 +25,17 @@ class Voxel
 		// VOXEL VALUE
 
 		void					setValue(const float value);
-		const float				getValue() const;
+        float				getValue() const;
 
 
 		// OPERATORS
 
-		const bool				operator==(const Voxel &other) const;
-		const bool				operator!=(const Voxel &other) const;
-		const bool				operator>(const Voxel &other) const;
-		const bool				operator>=(const Voxel &other) const;
-		const bool				operator<(const Voxel &other) const;
-		const bool				operator<=(const Voxel &other) const;
+        bool                    operator==(const Voxel &other) const;
+        bool                    operator!=(const Voxel &other) const;
+        bool                    operator>(const Voxel &other) const;
+        bool                    operator>=(const Voxel &other) const;
+        bool                    operator<(const Voxel &other) const;
+        bool                    operator<=(const Voxel &other) const;
 
 		const Voxel				operator+(const Voxel &other) const;
 		const Voxel				operator-(const Voxel &other) const;
@@ -74,18 +74,17 @@ class Volume
 		const Voxel&			voxel(const int x, const int y, const int z) const;
 		const Voxel*			voxels() const;
 
-		const int				width() const;
-		const int				height() const;
-		const int				depth() const;
+        int                     width() const;
+        int                     height() const;
+        int                     depth() const;
 
-		const int				size() const;
+        int                     size() const;
 
 		bool					loadFromFile(QString filename, QProgressBar* progressBar);
 
 
 	private:
 
-		std::vector<Voxel>		m_Voxels;
 
 		int						m_Width;
 		int						m_Height;
@@ -93,4 +92,5 @@ class Volume
 
 		int						m_Size;
 
+        std::vector<Voxel>		m_Voxels;
 };
