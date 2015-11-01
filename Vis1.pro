@@ -3,7 +3,9 @@ TEMPLATE = app
 QT += qml quick widgets
 
 SOURCES += main.cpp \
-    Volume.cpp
+    Volume.cpp \
+    volumetricview.cpp \
+    volumetricrenderer.cpp
 
 RESOURCES += qml.qrc
 
@@ -14,6 +16,8 @@ QML_IMPORT_PATH =
 include(deployment.pri)
 
 HEADERS += \
-    Volume.h
+    Volume.h \
+    volumetricview.h \
+    volumetricrenderer.h
 
 CONFIG += c++11

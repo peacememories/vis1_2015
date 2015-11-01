@@ -3,6 +3,8 @@ import QtQuick.Controls 1.3
 import QtQuick.Window 2.2
 import QtQuick.Dialogs 1.2
 
+import rendering 1.0
+
 ApplicationWindow {
     title: qsTr("Hello World")
     width: 640
@@ -14,8 +16,9 @@ ApplicationWindow {
             title: qsTr("&File")
             MenuItem {
                 text: qsTr("&Open")
-                onTriggered: messageDialog.show(qsTr("Open action triggered"));
+                onTriggered: loadDialog.open()
             }
+
             MenuItem {
                 text: qsTr("E&xit")
                 onTriggered: Qt.quit();
@@ -23,20 +26,16 @@ ApplicationWindow {
         }
     }
 
-    MainForm {
+
+    VolumetricView {
+        id: volView
         anchors.fill: parent
-        button1.onClicked: messageDialog.show(qsTr("Button 1 pressed"))
-        button2.onClicked: messageDialog.show(qsTr("Button 2 pressed"))
-        button3.onClicked: messageDialog.show(qsTr("Button 3 pressed"))
     }
 
-    MessageDialog {
-        id: messageDialog
-        title: qsTr("May I have your attention, please?")
-
-        function show(caption) {
-            messageDialog.text = caption;
-            messageDialog.open();
+    FileDialog {
+        id: loadDialog
+        onAccepted: {
+            volView.loadFile(loadDialog.fileUrl)
         }
     }
 }
