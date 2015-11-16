@@ -13,7 +13,7 @@ public:
     VolumetricView();
     Renderer *createRenderer() const;
 public slots:
-    void loadFile(QString);
+    void loadFile(QUrl);
 signals:
     void progressValueChanged(int);
 private:
