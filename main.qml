@@ -26,10 +26,13 @@ ApplicationWindow {
         }
     }
 
-
     VolumetricView {
         id: volView
         anchors.fill: parent
+
+        CameraControl {
+            anchors.fill: parent
+        }
     }
 
     FileDialog {

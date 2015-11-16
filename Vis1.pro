@@ -5,7 +5,9 @@ QT += qml quick widgets
 SOURCES += main.cpp \
     Volume.cpp \
     volumetricview.cpp \
-    volumetricrenderer.cpp
+    volumetricrenderer.cpp \
+    camera.cpp \
+    cameracontrol.cpp
 
 RESOURCES += qml.qrc
 
@@ -18,6 +20,8 @@ include(deployment.pri)
 HEADERS += \
     Volume.h \
     volumetricview.h \
-    volumetricrenderer.h
+    volumetricrenderer.h \
+    camera.h \
+    cameracontrol.h
 
 CONFIG += c++11
