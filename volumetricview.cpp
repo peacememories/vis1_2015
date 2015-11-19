@@ -15,6 +15,11 @@ unsigned int VolumetricView::volumeId()
     return m_volumeId;
 }
 
+QMatrix4x4 VolumetricView::vp()
+{
+    return m_camera->view() * m_camera->projection();
+}
+
 void VolumetricView::loadFile(QUrl url)
 {
     std::unique_ptr<Volume> newVolume(new Volume);

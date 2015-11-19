@@ -32,9 +32,16 @@ private:
 
     QVector<QVector3D> m_vertices;
     QVector<QVector3D> m_normals;
+    QVector<GLuint> m_indices;
     QOpenGLBuffer m_vertexBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     QOpenGLBuffer m_normalBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
+    QOpenGLBuffer m_indexBuffer = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
+    QOpenGLVertexArrayObject m_vao;
     QOpenGLShaderProgram m_program;
+
+    QMatrix4x4 m_vp;
+
+    float m_aspectRatio;
 };
 
 #endif // VOLUMETRICRENDERER_H
