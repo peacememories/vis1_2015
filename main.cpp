@@ -11,7 +11,7 @@ int main(int argc, char *argv[])
 {
     QApplication app(argc, argv);
 
-    QSurfaceFormat format;// = window->format();
+    QSurfaceFormat format;
     format.setVersion(4,3);
     format.setProfile(QSurfaceFormat::CompatibilityProfile);
     format.setOption(QSurfaceFormat::DebugContext);
