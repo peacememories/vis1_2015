@@ -35,6 +35,10 @@ ApplicationWindow {
         }
     }
 
+    Text {
+        text: "Hi"
+    }
+
     FileDialog {
         id: loadDialog
         onAccepted: {

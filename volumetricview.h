@@ -12,6 +12,7 @@ class VolumetricView : public QQuickFramebufferObject
 public:
     VolumetricView();
     Renderer *createRenderer() const;
+    unsigned int volumeId();
 public slots:
     void loadFile(QUrl);
 signals:
@@ -19,6 +20,7 @@ signals:
 private:
     QProgressBar m_progress;
     std::unique_ptr<Volume> m_volume;
+    unsigned int m_volumeId;
 
 private slots:
 };

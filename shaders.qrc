@@ -1,0 +1,6 @@
+<RCC>
+    <qresource prefix="/">
+        <file>cube.fsh</file>
+        <file>cube.vsh</file>
+    </qresource>
+</RCC>

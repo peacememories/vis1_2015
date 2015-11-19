@@ -7,9 +7,11 @@ SOURCES += main.cpp \
     volumetricview.cpp \
     volumetricrenderer.cpp \
     camera.cpp \
-    cameracontrol.cpp
+    cameracontrol.cpp \
+    openglloghandler.cpp
 
-RESOURCES += qml.qrc
+RESOURCES += qml.qrc \
+    shaders.qrc
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -22,6 +24,11 @@ HEADERS += \
     volumetricview.h \
     volumetricrenderer.h \
     camera.h \
-    cameracontrol.h
+    cameracontrol.h \
+    openglloghandler.h
 
 CONFIG += c++11
+
+DISTFILES += \
+    cube.vsh \
+    cube.fsh
