@@ -29,8 +29,10 @@ ApplicationWindow {
     VolumetricView {
         id: volView
         anchors.fill: parent
+        viewDirection: camControl.direction
 
         CameraControl {
+            id: camControl
             anchors.fill: parent
         }
     }

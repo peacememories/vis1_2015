@@ -21,11 +21,18 @@ QVector3D VolumetricView::viewDirection()
     return m_viewDirection;
 }
 
+void VolumetricView::setViewDirection(QVector3D dir)
+{
+    m_viewDirection = dir;
+    update();
+}
+
 void VolumetricView::loadFile(QUrl url)
 {
     std::unique_ptr<Volume> newVolume(new Volume);
     newVolume->loadFromFile(url.toLocalFile(), &m_progress);
     m_volume = std::move(newVolume);
     m_volumeId = qrand();
+    update();
 }
 
