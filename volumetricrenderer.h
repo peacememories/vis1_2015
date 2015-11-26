@@ -11,6 +11,7 @@
 #include <QOpenGLDebugLogger>
 
 #include "openglloghandler.h"
+#include "geometry.h"
 
 class VolumetricRenderer : public QQuickFramebufferObject::Renderer, QOpenGLFunctions_4_3_Compatibility
 {
@@ -30,9 +31,7 @@ private:
     QOpenGLDebugLogger m_logger;
     OpenGLLogHandler m_logHandler;
 
-    QVector<QVector3D> m_vertices;
-    QVector<QVector3D> m_normals;
-    QVector<GLuint> m_indices;
+    Mesh m_mesh;
     QOpenGLBuffer m_vertexBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     QOpenGLBuffer m_normalBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
     QOpenGLBuffer m_indexBuffer = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
@@ -40,8 +39,6 @@ private:
     QOpenGLShaderProgram m_program;
 
     QMatrix4x4 m_vp;
-
-    float m_aspectRatio;
 };
 
 #endif // VOLUMETRICRENDERER_H

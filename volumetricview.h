@@ -12,12 +12,14 @@ class VolumetricView : public QQuickFramebufferObject
 {
     Q_OBJECT
 
-    Q_PROPERTY(Camera* camera MEMBER m_camera)
 public:
+    Q_PROPERTY(QVector3D viewDirection MEMBER m_viewDirection)
+
     VolumetricView();
     Renderer *createRenderer() const;
+
     unsigned int volumeId();
-    QMatrix4x4 vp();
+    QVector3D viewDirection();
 public slots:
     void loadFile(QUrl);
 signals:
@@ -26,8 +28,7 @@ private:
     QProgressBar m_progress;
     std::unique_ptr<Volume> m_volume;
     unsigned int m_volumeId;
-    Camera* m_camera;
-
+    QVector3D m_viewDirection;
 private slots:
 };
 

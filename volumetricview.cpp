@@ -3,6 +3,7 @@
 
 VolumetricView::VolumetricView()
 {
+    m_viewDirection = QVector3D(0,3,3);
 }
 
 QQuickFramebufferObject::Renderer *VolumetricView::createRenderer() const
@@ -15,9 +16,9 @@ unsigned int VolumetricView::volumeId()
     return m_volumeId;
 }
 
-QMatrix4x4 VolumetricView::vp()
+QVector3D VolumetricView::viewDirection()
 {
-    return m_camera->view() * m_camera->projection();
+    return m_viewDirection;
 }
 
 void VolumetricView::loadFile(QUrl url)

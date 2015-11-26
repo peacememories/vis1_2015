@@ -6,7 +6,6 @@ SOURCES += main.cpp \
     Volume.cpp \
     volumetricview.cpp \
     volumetricrenderer.cpp \
-    camera.cpp \
     cameracontrol.cpp \
     openglloghandler.cpp \
     geometry.cpp
@@ -24,7 +23,6 @@ HEADERS += \
     Volume.h \
     volumetricview.h \
     volumetricrenderer.h \
-    camera.h \
     cameracontrol.h \
     openglloghandler.h \
     geometry.h

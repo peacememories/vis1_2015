@@ -8,11 +8,6 @@ CameraControl::CameraControl()
     setFlag(ItemAcceptsInputMethod, true);
 }
 
-Camera CameraControl::camera()
-{
-    return m_camera;
-}
-
 void CameraControl::mouseMoveEvent(QMouseEvent *event)
 {
     qDebug() << "Mouse Event!";

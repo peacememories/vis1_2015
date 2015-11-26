@@ -11,9 +11,9 @@ struct Mesh {
     QVector<unsigned int> indices;
 };
 
-void plane(Mesh&, QVector3D direction = QVector3D(0,0,1), QVector3D position = QVector3D(0,0,0), QVector2D size = QVector2D(1,1));
+void plane(Mesh&, QVector3D const& direction = QVector3D(0,0,1), QVector3D const& position = QVector3D(0,0,0), QVector2D const& size = QVector2D(1,1));
 
-void cube(Mesh&, QVector3D position, QVector3D size);
+void cube(Mesh&, QVector3D const& position = QVector3D(0,0,0), QVector3D const& size = QVector3D(1,1,1));
 
 #endif // GEOMETRY_H
 
