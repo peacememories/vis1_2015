@@ -39,6 +39,7 @@ unsigned int GLMesh::size() const
 
 bool GLMesh::create()
 {
+    initializeOpenGLFunctions();
     if(!m_vertices.create()) {
         return false;
     }
