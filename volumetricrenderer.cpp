@@ -17,40 +17,12 @@ VolumetricRenderer::VolumetricRenderer()
     m_logger.startLogging();
 
     cube(m_mesh);
+    m_glMesh.create();
+    m_glMesh.loadMesh(m_mesh);
 
     m_program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/cube.vsh");
     m_program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/cube.fsh");
     m_program.link();
-
-    m_vao.create();
-    m_vao.bind();
-    m_program.bind();
-
-    m_vertexBuffer.create();
-    m_vertexBuffer.bind();
-    m_vertexBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
-    m_vertexBuffer.allocate(m_mesh.vertices.constData(), m_mesh.vertices.size()*sizeof(QVector3D));
-
-    m_program.enableAttributeArray(0);
-    m_program.setAttributeBuffer(0, GL_FLOAT, 0, 3);
-    m_vertexBuffer.release();
-
-    m_normalBuffer.create();
-    m_normalBuffer.bind();
-    m_normalBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
-    m_normalBuffer.allocate(m_mesh.normals.constData(), m_mesh.normals.size()*sizeof(QVector3D));
-
-    m_program.enableAttributeArray(1);
-    m_program.setAttributeBuffer(1, GL_FLOAT, 0, 3);
-    m_normalBuffer.release();
-
-    m_indexBuffer.create();
-    m_indexBuffer.bind();
-    m_indexBuffer.setUsagePattern(QOpenGLBuffer::StaticDraw);
-    m_indexBuffer.allocate(m_mesh.indices.constData(), m_mesh.indices.size()*sizeof(GLuint));
-
-    m_program.release();
-    m_vao.release();
 }
 
 void VolumetricRenderer::render()
@@ -75,11 +47,12 @@ void VolumetricRenderer::render()
 
         m_program.setUniformValue("mvp", m_vp*modelMatrix);
         m_program.setUniformValue("nm", modelMatrix.normalMatrix());
-        m_vao.bind();
 
-        glDrawElements(GL_TRIANGLES, m_mesh.indices.size(), GL_UNSIGNED_INT, 0);
+        m_glMesh.bind();
 
-        m_vao.release();
+        glDrawElements(GL_TRIANGLES, m_glMesh.size(), GL_UNSIGNED_INT, 0);
+
+        m_glMesh.release();
 
         m_program.release();
     }

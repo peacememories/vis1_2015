@@ -13,6 +13,7 @@
 
 #include "openglloghandler.h"
 #include "geometry.h"
+#include "glmesh.h"
 
 class VolumetricRenderer : public QQuickFramebufferObject::Renderer, QOpenGLFunctions_4_3_Compatibility
 {
@@ -28,15 +29,11 @@ private:
     unsigned int m_volumeId;
     QQuickWindow* m_window;
 
-
     QOpenGLDebugLogger m_logger;
     OpenGLLogHandler m_logHandler;
 
     Mesh m_mesh;
-    QOpenGLBuffer m_vertexBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
-    QOpenGLBuffer m_normalBuffer = QOpenGLBuffer(QOpenGLBuffer::VertexBuffer);
-    QOpenGLBuffer m_indexBuffer = QOpenGLBuffer(QOpenGLBuffer::IndexBuffer);
-    QOpenGLVertexArrayObject m_vao;
+    GLMesh m_glMesh;
     QOpenGLShaderProgram m_program;
 
     QMatrix4x4 m_vp;
