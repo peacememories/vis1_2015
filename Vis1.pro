@@ -8,7 +8,8 @@ SOURCES += main.cpp \
     volumetricrenderer.cpp \
     cameracontrol.cpp \
     openglloghandler.cpp \
-    geometry.cpp
+    geometry.cpp \
+    glmesh.cpp
 
 RESOURCES += qml.qrc \
     shaders.qrc
@@ -25,7 +26,8 @@ HEADERS += \
     volumetricrenderer.h \
     cameracontrol.h \
     openglloghandler.h \
-    geometry.h
+    geometry.h \
+    glmesh.h
 
 CONFIG += c++11
 

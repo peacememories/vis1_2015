@@ -9,6 +9,7 @@
 #include <QOpenGLVertexArrayObject>
 #include <QQuickWindow>
 #include <QOpenGLDebugLogger>
+#include <QOpenGLTexture>
 
 #include "openglloghandler.h"
 #include "geometry.h"
@@ -39,6 +40,8 @@ private:
     QOpenGLShaderProgram m_program;
 
     QMatrix4x4 m_vp;
+
+    QSharedPointer<QOpenGLTexture> m_voxels;
 };
 
 #endif // VOLUMETRICRENDERER_H

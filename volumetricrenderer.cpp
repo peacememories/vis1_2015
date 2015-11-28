@@ -60,21 +60,29 @@ void VolumetricRenderer::render()
     glClearColor(0.5f, 0.5f, 0.7f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-    glCullFace(GL_BACK);
-    glEnable(GL_CULL_FACE);
-    glEnable(GL_DEPTH_TEST);
+    if(!m_voxels.isNull()) {
+        glCullFace(GL_BACK);
+        glEnable(GL_CULL_FACE);
+        glEnable(GL_DEPTH_TEST);
 
-    m_program.bind();
+        m_program.bind();
 
-    m_program.setUniformValue("mvp", m_vp);
-    m_vao.bind();
+        m_voxels->bind(0);
 
-    glDrawElements(GL_TRIANGLES, m_mesh.indices.size(), GL_UNSIGNED_INT, 0);
+        QMatrix4x4 modelMatrix;
+        modelMatrix.scale(m_voxels->width(), m_voxels->height(), m_voxels->depth());
+        modelMatrix.scale(0.01);
 
-    m_vao.release();
+        m_program.setUniformValue("mvp", m_vp*modelMatrix);
+        m_program.setUniformValue("nm", modelMatrix.normalMatrix());
+        m_vao.bind();
 
-    m_program.release();
+        glDrawElements(GL_TRIANGLES, m_mesh.indices.size(), GL_UNSIGNED_INT, 0);
 
+        m_vao.release();
+
+        m_program.release();
+    }
     update();
     m_window->resetOpenGLState();
 }
@@ -99,8 +107,13 @@ void VolumetricRenderer::synchronize(QQuickFramebufferObject * input)
     m_vp.lookAt(view->viewDirection(), QVector3D(0,0,0), QVector3D(0,1,0));
 
     //Reload voxel data
-    if(view->volumeId() != m_volumeId) {
+    if(view->volumeId() != m_volumeId && !view->volume().isNull()) {
         m_volumeId = view->volumeId();
+        QSharedPointer<const Volume> volume = view->volume();
+        m_voxels = QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QOpenGLTexture::Target3D));
+        m_voxels->create();
+        m_voxels->setSize(volume->width(), volume->height(), volume->depth());
+        m_voxels->setData(QOpenGLTexture::Red, QOpenGLTexture::Float32, volume->voxels());
     }
 }
 

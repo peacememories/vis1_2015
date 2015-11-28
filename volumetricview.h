@@ -17,16 +17,17 @@ public:
     VolumetricView();
     Renderer *createRenderer() const;
 
-    unsigned int volumeId();
-    QVector3D viewDirection();
-    void setViewDirection(QVector3D dir);
+    unsigned int volumeId() const;
+    QVector3D viewDirection() const;
+    void setViewDirection(const QVector3D dir);
+    QSharedPointer<const Volume> volume() const;
 public slots:
     void loadFile(QUrl);
 signals:
     void progressValueChanged(int);
 private:
     QProgressBar m_progress;
-    std::unique_ptr<Volume> m_volume;
+    QSharedPointer<const Volume> m_volume;
     unsigned int m_volumeId;
     QVector3D m_viewDirection;
 private slots:
