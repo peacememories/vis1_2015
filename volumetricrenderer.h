@@ -10,6 +10,7 @@
 #include <QQuickWindow>
 #include <QOpenGLDebugLogger>
 #include <QOpenGLTexture>
+#include <memory>
 
 #include "openglloghandler.h"
 #include "geometry.h"
@@ -34,7 +35,11 @@ private:
 
     Mesh m_mesh;
     GLMesh m_glMesh;
-    QOpenGLShaderProgram m_program;
+    QOpenGLShaderProgram m_bfProgram;
+    QOpenGLShaderProgram m_sampleProgram;
+
+
+    std::unique_ptr<QOpenGLFramebufferObject> m_backfaceBuffer;
 
     QMatrix4x4 m_vp;
 

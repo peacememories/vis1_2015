@@ -8,6 +8,7 @@ out vec4 color;
 
 void main(void)
 {
-    float brightness = texture(voxels, (vec3(1,1,1)+position)/2).r;
-    color = vec4(brightness, brightness, brightness, 1);//vec4(1,0,1,1);
+    vec3 coords = position+vec3(0.5);
+    //color = vec4(coords, texture(voxels, coords).r);
+    color = vec4(1);
 }

@@ -20,41 +20,63 @@ VolumetricRenderer::VolumetricRenderer()
     m_glMesh.create();
     m_glMesh.loadMesh(m_mesh);
 
-    m_program.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/cube.vsh");
-    m_program.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/cube.fsh");
-    m_program.link();
+    m_bfProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/cube.vsh");
+    m_bfProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/cube.fsh");
+    m_bfProgram.link();
+
+    m_sampleProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/mip.vsh");
+    m_sampleProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/mip.fsh");
+    m_sampleProgram.link();
 }
 
 void VolumetricRenderer::render()
 {
     glDepthMask(true);
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
 
-    glClearColor(0.5f, 0.5f, 0.7f, 1.0f);
+    glFrontFace(GL_CCW);
+
+    glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     if(!m_voxels.isNull()) {
-        glCullFace(GL_BACK);
-        glEnable(GL_CULL_FACE);
-        glEnable(GL_DEPTH_TEST);
-
-        m_program.bind();
-
-        m_voxels->bind(0);
-
         QMatrix4x4 modelMatrix;
         modelMatrix.scale(m_voxels->width(), m_voxels->height(), m_voxels->depth());
         modelMatrix.scale(0.01);
 
-        m_program.setUniformValue("mvp", m_vp*modelMatrix);
-        m_program.setUniformValue("nm", modelMatrix.normalMatrix());
 
+        m_bfProgram.bind();
+        m_bfProgram.setUniformValue("mvp", m_vp*modelMatrix);
+        m_bfProgram.setUniformValue("voxels", 0);
+        m_voxels->bind(0);
         m_glMesh.bind();
 
+
+        m_backfaceBuffer->bind();
+        glCullFace(GL_FRONT);
+        glClearColor(0.0f, 0.0f, 0.0f, 0.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        glDrawElements(GL_TRIANGLES, m_glMesh.size(), GL_UNSIGNED_INT, 0);
+        m_backfaceBuffer->release();
+
+        m_sampleProgram.bind();
+        m_sampleProgram.setUniformValue("mvp", m_vp*modelMatrix);
+        m_sampleProgram.setUniformValue("mm", modelMatrix);
+        m_sampleProgram.setUniformValue("windowSize", framebufferObject()->size());
+        m_sampleProgram.setUniformValue("voxels", 0);
+        m_sampleProgram.setUniformValue("backfaces", 1);
+
+        framebufferObject()->bind();
+        glActiveTexture(GL_TEXTURE1);
+        glEnable(GL_TEXTURE_2D);
+        glBindTexture(GL_TEXTURE_2D, m_backfaceBuffer->texture());
+        glCullFace(GL_BACK);
         glDrawElements(GL_TRIANGLES, m_glMesh.size(), GL_UNSIGNED_INT, 0);
 
         m_glMesh.release();
+        m_sampleProgram.release();
 
-        m_program.release();
     }
     update();
     m_window->resetOpenGLState();
@@ -64,6 +86,8 @@ QOpenGLFramebufferObject *VolumetricRenderer::createFramebufferObject(const QSiz
 {
     QOpenGLFramebufferObjectFormat format;
     format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
+    format.setSamples(0);
+    m_backfaceBuffer.reset(new QOpenGLFramebufferObject(size, format));
     return new QOpenGLFramebufferObject(size, format);
 }
 

@@ -16,7 +16,7 @@ void plane(Mesh &mesh, const QVector3D &direction, const QVector3D &position, co
         up = QVector3D(0,0,1);
     }
 
-    mapper.rotate(QQuaternion::fromDirection(direction, up));
+    mapper.rotate(QQuaternion::fromDirection(-direction, up));
 
     mapper.scale(size.x(), size.y());
 

@@ -33,4 +33,6 @@ CONFIG += c++11
 
 DISTFILES += \
     cube.vsh \
-    cube.fsh
+    cube.fsh \
+    mip.vsh \
+    mip.fsh
