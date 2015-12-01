@@ -4,6 +4,7 @@
 VolumetricView::VolumetricView()
 {
     m_viewDirection = QVector3D(0,3,3);
+    m_viewPosition = QVector3D(0, 0, 0);
 }
 
 QQuickFramebufferObject::Renderer *VolumetricView::createRenderer() const
@@ -24,6 +25,16 @@ QVector3D VolumetricView::viewDirection() const
 void VolumetricView::setViewDirection(const QVector3D dir)
 {
     m_viewDirection = dir;
+    update();
+}
+
+QVector3D VolumetricView::viewPosition() const
+{
+    return m_viewPosition;
+}
+void VolumetricView::setViewPosition(const QVector3D pos)
+{
+    m_viewPosition = pos;
     update();
 }
 

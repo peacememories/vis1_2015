@@ -13,6 +13,7 @@ class VolumetricView : public QQuickFramebufferObject
 
 public:
     Q_PROPERTY(QVector3D viewDirection READ viewDirection WRITE setViewDirection)
+    Q_PROPERTY(QVector3D viewPosition READ viewPosition WRITE setViewPosition)
 
     VolumetricView();
     Renderer *createRenderer() const;
@@ -20,6 +21,8 @@ public:
     unsigned int volumeId() const;
     QVector3D viewDirection() const;
     void setViewDirection(const QVector3D dir);
+    QVector3D viewPosition() const;
+    void setViewPosition(const QVector3D pos);
     QSharedPointer<const Volume> volume() const;
 public slots:
     void loadFile(QUrl);
@@ -30,6 +33,7 @@ private:
     QSharedPointer<const Volume> m_volume;
     unsigned int m_volumeId;
     QVector3D m_viewDirection;
+    QVector3D m_viewPosition;
 private slots:
 };
 

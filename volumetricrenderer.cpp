@@ -101,7 +101,8 @@ void VolumetricRenderer::synchronize(QQuickFramebufferObject * input)
     m_vp.setToIdentity();
     m_vp.scale(1,-1,1);
     m_vp.perspective(65, aspectRatio, 0.1, 100);
-    m_vp.lookAt(view->viewDirection(), QVector3D(0,0,0), QVector3D(0,1,0));
+    m_vp.translate(view->viewPosition().x(), view->viewPosition().y(), 0.0);
+    m_vp.lookAt(view->viewDirection() ,  QVector3D(0,0,0), QVector3D(0,1,0));
 
     //Reload voxel data
     if(view->volumeId() != m_volumeId && !view->volume().isNull()) {

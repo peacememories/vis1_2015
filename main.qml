@@ -30,6 +30,7 @@ ApplicationWindow {
         id: volView
         anchors.fill: parent
         viewDirection: camControl.direction
+        viewPosition: camControl.position
 
         CameraControl {
             id: camControl
