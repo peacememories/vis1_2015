@@ -24,6 +24,21 @@ ApplicationWindow {
                 onTriggered: Qt.quit();
             }
         }
+        Menu {
+            title:qsTr("&Color")
+            MenuItem {
+                text:qsTr("&Red")
+                onTriggered: volView.setColor(Qt.vector4d(1.0, 0.0, 0.0, 1.0))
+            }
+            MenuItem {
+                text:qsTr("&Green")
+                onTriggered: volView.setColor(Qt.vector4d(0.0, 1.0, 0.0, 1.0))
+            }
+            MenuItem {
+                text:qsTr("&Blue")
+                onTriggered: volView.setColor(Qt.vector4d(0.0, 0.0, 1.0, 1.0))
+            }
+        }
     }
 
     VolumetricView {

@@ -4,6 +4,7 @@ uniform sampler3D voxels;
 uniform sampler2D backfaces;
 uniform mat4 mm;
 uniform vec2 windowSize;
+uniform vec4 myColor;
 
 in vec3 position;
 
@@ -16,5 +17,6 @@ void main(void)
     vec3 backface_pos = lastPass.rgb;
     //float brightness = length(backface_pos - coords);
     //color = vec4(vec3(brightness), 1.0);
-    color = vec4(gl_FragCoord.xy, 0, 1.0);
+   /* color = vec4(gl_FragCoord.xy, 0, 1.0);*/
+    color = myColor;
 }

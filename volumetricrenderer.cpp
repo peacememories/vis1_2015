@@ -27,6 +27,7 @@ VolumetricRenderer::VolumetricRenderer()
     m_sampleProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/mip.vsh");
     m_sampleProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/mip.fsh");
     m_sampleProgram.link();
+
 }
 
 void VolumetricRenderer::render()
@@ -66,6 +67,7 @@ void VolumetricRenderer::render()
         m_sampleProgram.setUniformValue("windowSize", framebufferObject()->size());
         m_sampleProgram.setUniformValue("voxels", 0);
         m_sampleProgram.setUniformValue("backfaces", 1);
+        m_sampleProgram.setUniformValue("myColor", m_color);
 
         framebufferObject()->bind();
         glActiveTexture(GL_TEXTURE1);
@@ -113,5 +115,7 @@ void VolumetricRenderer::synchronize(QQuickFramebufferObject * input)
         m_voxels->setSize(volume->width(), volume->height(), volume->depth());
         m_voxels->setData(QOpenGLTexture::Red, QOpenGLTexture::Float32, volume->voxels());
     }
+
+    m_color = view->color();
 }
 

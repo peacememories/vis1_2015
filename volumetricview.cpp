@@ -5,6 +5,7 @@ VolumetricView::VolumetricView()
 {
     m_viewDirection = QVector3D(0,3,3);
     m_viewPosition = QVector3D(0, 0, 0);
+    m_color = QVector4D(1.0, 0.0, 1.0, 1.0);
 }
 
 QQuickFramebufferObject::Renderer *VolumetricView::createRenderer() const
@@ -36,6 +37,16 @@ void VolumetricView::setViewPosition(const QVector3D pos)
 {
     m_viewPosition = pos;
     update();
+}
+
+QVector4D VolumetricView::color() const
+{
+    return m_color;
+}
+
+void VolumetricView::setColor(QVector4D col)
+{
+    m_color = col;
 }
 
 QSharedPointer<const Volume> VolumetricView::volume() const
