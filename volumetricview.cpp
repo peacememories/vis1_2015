@@ -49,6 +49,24 @@ void VolumetricView::setColor(QVector4D col)
     m_color = col;
 }
 
+void  VolumetricView::setRed(float colR)
+{
+    m_color.setX(colR);
+    setColor(m_color);
+}
+
+void  VolumetricView::setGreen(float colG)
+{
+    m_color.setY(colG);
+    setColor(m_color);
+}
+
+void  VolumetricView::setBlue(float colB)
+{
+    m_color.setZ(colB);
+    setColor(m_color);
+}
+
 QSharedPointer<const Volume> VolumetricView::volume() const
 {
     return m_volume;

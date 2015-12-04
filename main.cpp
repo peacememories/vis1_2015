@@ -20,6 +20,7 @@ int main(int argc, char *argv[])
     qmlRegisterType<VolumetricView>("rendering", 1, 0, "VolumetricView");
     qmlRegisterType<CameraControl>("rendering", 1, 0, "CameraControl");
     QQmlApplicationEngine engine;
+
     engine.load(QUrl(QStringLiteral("qrc:/main.qml")));
 
     return app.exec();

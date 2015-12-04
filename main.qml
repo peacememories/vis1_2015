@@ -24,21 +24,6 @@ ApplicationWindow {
                 onTriggered: Qt.quit();
             }
         }
-        Menu {
-            title:qsTr("&Color")
-            MenuItem {
-                text:qsTr("&Red")
-                onTriggered: volView.setColor(Qt.vector4d(1.0, 0.0, 0.0, 1.0))
-            }
-            MenuItem {
-                text:qsTr("&Green")
-                onTriggered: volView.setColor(Qt.vector4d(0.0, 1.0, 0.0, 1.0))
-            }
-            MenuItem {
-                text:qsTr("&Blue")
-                onTriggered: volView.setColor(Qt.vector4d(0.0, 0.0, 1.0, 1.0))
-            }
-        }
     }
 
     VolumetricView {
@@ -50,6 +35,40 @@ ApplicationWindow {
         CameraControl {
             id: camControl
             anchors.fill: parent
+
+            TextEdit {
+                id: textRed
+                x: 10
+                y: 10
+                width: 80
+                height: 20
+                color: "#ffffff"
+                text: qsTr("R")
+                font.pixelSize: 22
+                onTextChanged: volView.setRed(textRed.getText(0,3) / 255)
+            }
+            TextEdit {
+                id: textGreen
+                x: 10
+                y: 40
+                width: 80
+                height: 20
+                color: "#ffffff"
+                text: qsTr("G")
+                font.pixelSize: 22
+                onTextChanged: volView.setGreen(textGreen.getText(0,3) / 255)
+            }
+            TextEdit {
+                id: textBlue
+                x: 10
+                y: 70
+                width: 80
+                height: 20
+                color: "#ffffff"
+                text: qsTr("B")
+                font.pixelSize: 22
+                onTextChanged: volView.setBlue(textBlue.getText(0,3) / 255)
+            }
         }
     }
 

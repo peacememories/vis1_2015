@@ -26,13 +26,16 @@ public:
     QVector3D viewPosition() const;
     void setViewPosition(const QVector3D pos);
     QVector4D color() const;
-    Q_INVOKABLE void setColor(QVector4D col);
+    Q_INVOKABLE void setRed(float colR);
+    Q_INVOKABLE void setGreen(float colG);
+    Q_INVOKABLE void setBlue(float colB);
     QSharedPointer<const Volume> volume() const;
 public slots:
     void loadFile(QUrl);
 signals:
     void progressValueChanged(int);
 private:
+     void setColor(QVector4D col);
     QProgressBar m_progress;
     QSharedPointer<const Volume> m_volume;
     unsigned int m_volumeId;
