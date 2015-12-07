@@ -6,6 +6,7 @@
 #include <QQuickWindow>
 #include <QOpenGLDebugLogger>
 #include <QSurfaceFormat>
+#include <QOpenGLPixelTransferOptions>
 #include "volumetricview.h"
 #include "openglloghandler.h"
 
@@ -47,7 +48,8 @@ void VolumetricRenderer::render()
 
 
         m_bfProgram.bind();
-        m_bfProgram.setUniformValue("mvp", m_vp*modelMatrix);
+        m_bfProgram.setUniformValue("mvp", m_vp*modelMatrix);    
+        m_bfProgram.setUniformValue("mm", modelMatrix);
         m_bfProgram.setUniformValue("voxels", 0);
         m_voxels->bind(0);
         m_glMesh.bind();
@@ -67,6 +69,8 @@ void VolumetricRenderer::render()
         m_sampleProgram.setUniformValue("voxels", 0);
         m_sampleProgram.setUniformValue("backfaces", 1);
 
+        m_voxels->bind(0);
+
         framebufferObject()->bind();
         glActiveTexture(GL_TEXTURE1);
         glEnable(GL_TEXTURE_2D);
@@ -84,11 +88,14 @@ void VolumetricRenderer::render()
 
 QOpenGLFramebufferObject *VolumetricRenderer::createFramebufferObject(const QSize &size)
 {
-    QOpenGLFramebufferObjectFormat format;
-    format.setAttachment(QOpenGLFramebufferObject::CombinedDepthStencil);
-    format.setSamples(0);
-    m_backfaceBuffer.reset(new QOpenGLFramebufferObject(size, format));
-    return new QOpenGLFramebufferObject(size, format);
+    QOpenGLFramebufferObjectFormat textureFormat;
+    textureFormat.setAttachment(QOpenGLFramebufferObject::Depth);
+    textureFormat.setInternalTextureFormat(GL_RGBA32F);
+    m_backfaceBuffer.reset(new QOpenGLFramebufferObject(size, textureFormat));
+    QOpenGLFramebufferObjectFormat mainBufferFormat;
+    mainBufferFormat.setAttachment(QOpenGLFramebufferObject::Depth);
+    mainBufferFormat.setSamples(0);
+    return new QOpenGLFramebufferObject(size, mainBufferFormat);
 }
 
 void VolumetricRenderer::synchronize(QQuickFramebufferObject * input)
@@ -109,8 +116,18 @@ void VolumetricRenderer::synchronize(QQuickFramebufferObject * input)
         QSharedPointer<const Volume> volume = view->volume();
         m_voxels = QSharedPointer<QOpenGLTexture>(new QOpenGLTexture(QOpenGLTexture::Target3D));
         m_voxels->create();
+        m_voxels->bind();
         m_voxels->setSize(volume->width(), volume->height(), volume->depth());
-        m_voxels->setData(QOpenGLTexture::Red, QOpenGLTexture::Float32, volume->voxels());
+        m_voxels->setMinificationFilter(QOpenGLTexture::LinearMipMapNearest);
+        m_voxels->setMagnificationFilter(QOpenGLTexture::LinearMipMapNearest);
+        m_voxels->allocateStorage(QOpenGLTexture::Red, QOpenGLTexture::Float32);
+
+        QOpenGLPixelTransferOptions transfer;
+        transfer.setRowLength(volume->width());
+        transfer.setImageHeight(volume->height());
+        transfer.setAlignment(1);
+        m_voxels->setData(QOpenGLTexture::Red, QOpenGLTexture::Float32, volume->voxels(), &transfer);
+        m_voxels->release();
     }
 }
 

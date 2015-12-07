@@ -1,7 +1,7 @@
 #version 330
 
-uniform sampler3D voxels;
 uniform sampler2D backfaces;
+uniform sampler3D voxels;
 uniform mat4 mm;
 uniform vec2 windowSize;
 
@@ -9,12 +9,24 @@ in vec3 position;
 
 out vec4 color;
 
+float combineDensity(float front, float back) {
+    return max(front, back);
+}
+
+float getDensity(vec3 frontFace, vec3 backFace, float distance) {
+    vec3 position = (backFace-frontFace)*distance + frontFace;
+    return texture(voxels, position).r;
+}
+
 void main(void)
 {
-    vec3 coords = position+vec3(0.5);
-    vec4 lastPass = texture(backfaces, gl_FragCoord.xy/2+vec2(0.5));
-    vec3 backface_pos = lastPass.rgb;
-    //float brightness = length(backface_pos - coords);
-    //color = vec4(vec3(brightness), 1.0);
-    color = vec4(gl_FragCoord.xy, 0, 1.0);
+    vec2 pixelPos = gl_FragCoord.xy/windowSize;
+    vec3 frontFace = position+vec3(0.5);
+    vec3 backFace = texture(backfaces, pixelPos).xyz;
+
+    float density = 0.1;
+    for(float x = 0; x < 1; x+=0.05) {
+        density = combineDensity(density, getDensity(frontFace, backFace, x));
+    }
+    color = vec4(vec3(density), 1);
 }
