@@ -1,5 +1,6 @@
 #include <QtQuick>
 #include "cameracontrol.h"
+#include <iostream>
 
 inline float clamp(float x, float a, float b)
 {
@@ -8,7 +9,9 @@ inline float clamp(float x, float a, float b)
 
 CameraControl::CameraControl()
 {
-    setAcceptedMouseButtons(Qt::LeftButton);
+    forceActiveFocus();
+    setAcceptedMouseButtons(Qt::LeftButton | Qt::MiddleButton);
+    qDebug() << acceptedMouseButtons();
     setFlag(ItemAcceptsInputMethod, true);
     m_rotation = 0;
     m_elevation = 45;
@@ -54,14 +57,21 @@ void CameraControl::mouseMoveEvent(QMouseEvent *event)
     QPoint delta = event->pos() - m_lastPos;
     m_lastPos = event->pos();
 
-    float xspeed = 1;
-    float yspeed = 1;
+   if (event->buttons() & Qt::LeftButton) {
+        float xspeed = 1;
+        float yspeed = 1;
 
-    m_rotation = m_rotation+delta.x()*xspeed;
-    m_elevation = clamp(m_elevation+delta.y()*yspeed, -80, 80);
+        m_rotation = m_rotation+delta.x()*xspeed;
+        m_elevation = clamp(m_elevation+delta.y()*yspeed, -80, 80);
 
-    updateDirection();
-    event->accept();
+        updateDirection();
+        event->accept();
+    } else if ((event->buttons() & Qt::MidButton) || (event->buttons() & Qt::MiddleButton)) {
+       m_posX = m_posX + delta.x()*0.01;
+       m_posY = m_posY - delta.y()*0.01;
+       m_position= QVector3D(m_posX, m_posY, 0.0f);
+       positionChanged(m_position);
+   }
 }
 
 void CameraControl::mousePressEvent(QMouseEvent *event)
@@ -88,3 +98,17 @@ void CameraControl::wheelEvent(QWheelEvent *event)
     event->accept();
 }
 
+void CameraControl::keyPressEvent(QKeyEvent *event)
+{
+   if (event->key() == Qt::Key_W) {
+        m_posY += 0.05;
+   } else if(event->key() == Qt::Key_S) {
+       m_posY -= 0.05;
+   } else if(event->key() == Qt::Key_D) {
+       m_posX += 0.05;
+   } else if (event->key() == Qt::Key_A) {
+       m_posX -= 0.05;
+   }
+   m_position= QVector3D(m_posX, m_posY, 0.0f);
+   positionChanged(m_position);
+}

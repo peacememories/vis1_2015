@@ -4,6 +4,7 @@ uniform sampler2D backfaces;
 uniform sampler3D voxels;
 uniform mat4 mm;
 uniform vec2 windowSize;
+uniform vec3 myColor;
 
 in vec3 position;
 
@@ -28,5 +29,5 @@ void main(void)
     for(float x = 0; x < 1; x+=0.05) {
         density = combineDensity(density, getDensity(frontFace, backFace, x));
     }
-    color = vec4(vec3(density), 1);
+    color = vec4(vec3(density)+myColor, 1);
 }

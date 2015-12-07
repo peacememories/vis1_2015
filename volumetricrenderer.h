@@ -11,6 +11,7 @@
 #include <QOpenGLDebugLogger>
 #include <QOpenGLTexture>
 #include <memory>
+#include <QVector4D>
 
 #include "openglloghandler.h"
 #include "geometry.h"
@@ -42,6 +43,7 @@ private:
     std::unique_ptr<QOpenGLFramebufferObject> m_backfaceBuffer;
 
     QMatrix4x4 m_vp;
+    QVector4D m_color;
 
     QSharedPointer<QOpenGLTexture> m_voxels;
 };

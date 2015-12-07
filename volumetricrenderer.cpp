@@ -28,6 +28,7 @@ VolumetricRenderer::VolumetricRenderer()
     m_sampleProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/mip.vsh");
     m_sampleProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/mip.fsh");
     m_sampleProgram.link();
+
 }
 
 void VolumetricRenderer::render()
@@ -68,6 +69,7 @@ void VolumetricRenderer::render()
         m_sampleProgram.setUniformValue("windowSize", framebufferObject()->size());
         m_sampleProgram.setUniformValue("voxels", 0);
         m_sampleProgram.setUniformValue("backfaces", 1);
+        m_sampleProgram.setUniformValue("myColor", m_color);
 
         m_voxels->bind(0);
 
@@ -108,7 +110,8 @@ void VolumetricRenderer::synchronize(QQuickFramebufferObject * input)
     m_vp.setToIdentity();
     m_vp.scale(1,-1,1);
     m_vp.perspective(65, aspectRatio, 0.1, 100);
-    m_vp.lookAt(view->viewDirection(), QVector3D(0,0,0), QVector3D(0,1,0));
+    m_vp.translate(view->viewPosition().x(), view->viewPosition().y(), 0.0);
+    m_vp.lookAt(view->viewDirection() ,  QVector3D(0,0,0), QVector3D(0,1,0));
 
     //Reload voxel data
     if(view->volumeId() != m_volumeId && !view->volume().isNull()) {
@@ -129,5 +132,7 @@ void VolumetricRenderer::synchronize(QQuickFramebufferObject * input)
         m_voxels->setData(QOpenGLTexture::Red, QOpenGLTexture::Float32, volume->voxels(), &transfer);
         m_voxels->release();
     }
+
+    m_color = view->color();
 }
 
