@@ -121,6 +121,7 @@ void VolumetricRenderer::synchronize(QQuickFramebufferObject * input)
         m_voxels->create();
         m_voxels->bind();
         m_voxels->setSize(volume->width(), volume->height(), volume->depth());
+        m_voxels->setFormat(QOpenGLTexture::R32F);
         m_voxels->setMinificationFilter(QOpenGLTexture::LinearMipMapNearest);
         m_voxels->setMagnificationFilter(QOpenGLTexture::LinearMipMapNearest);
         m_voxels->allocateStorage(QOpenGLTexture::Red, QOpenGLTexture::Float32);
