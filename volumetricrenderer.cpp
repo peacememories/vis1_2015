@@ -79,12 +79,6 @@ void VolumetricRenderer::render()
         m_sampleProgram.setUniformValue("backfaces", 1);
         m_sampleProgram.setUniformValue("myColor", QVector3D(m_color.x(), m_color.y(), m_color.z()));
 
-          std::cout << "start" <<std::endl;
-        std::cout << m_color.x() <<std::endl;
-        std::cout << m_color.y() <<std::endl;
-        std::cout << m_color.z() <<std::endl;
-          std::cout <<"end" <<std::endl;
-
         m_voxels->bind(0);
 
         framebufferObject()->bind();
@@ -149,8 +143,5 @@ void VolumetricRenderer::synchronize(QQuickFramebufferObject * input)
     }
 
     m_color = view->color();
-    std::cout << m_color.x() <<std::endl;
-    std::cout << m_color.y() <<std::endl;
-    std::cout << m_color.z() <<std::endl;
 }
 
