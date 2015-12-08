@@ -45,11 +45,13 @@ void VolumetricRenderer::render()
     if(!m_voxels.isNull()) {
         QMatrix4x4 modelMatrix;
         modelMatrix.scale(m_voxels->width(), m_voxels->height(), m_voxels->depth());
-        modelMatrix.scale(0.01);
+        modelMatrix.scale(-0.01);
+        modelMatrix.rotate(60.0, QVector3D(1,0,0));
+        modelMatrix.rotate(180.0, QVector3D(0,1,0));
 
 
         m_bfProgram.bind();
-        m_bfProgram.setUniformValue("mvp", m_vp*modelMatrix);    
+        m_bfProgram.setUniformValue("mvp", m_vp*modelMatrix);
         m_bfProgram.setUniformValue("mm", modelMatrix);
         m_bfProgram.setUniformValue("voxels", 0);
         m_voxels->bind(0);

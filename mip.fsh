@@ -26,7 +26,7 @@ void main(void)
     vec3 backFace = texture(backfaces, pixelPos).xyz;
 
     float density = 0.0;
-    for(float x = 0; x < 1; x+=0.05) {
+    for(float x = 0; x < 1; x+=0.001) {
         density = combineDensity(density, getDensity(frontFace, backFace, x));
     }
     color = vec4(vec3(density), 1);
