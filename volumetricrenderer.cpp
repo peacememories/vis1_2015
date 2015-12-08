@@ -46,9 +46,15 @@ void VolumetricRenderer::render()
         QMatrix4x4 modelMatrix;
         modelMatrix.scale(m_voxels->width(), m_voxels->height(), m_voxels->depth());
         modelMatrix.scale(-0.01);
-        modelMatrix.rotate(60.0, QVector3D(1,0,0));
+        //modelMatrix.rotate(180.0, QVector3D(1,0,0));
         modelMatrix.rotate(180.0, QVector3D(0,1,0));
-
+       /* for (int i = 0; i < 4; i++) {
+                std::cout << modelMatrix.column(i).x() << std::endl;
+                std::cout << modelMatrix.column(i).y() << std::endl;
+                std::cout << modelMatrix.column(i).z() << std::endl;
+                std::cout << modelMatrix.column(i).w() << std::endl;
+        }
+        std::cout << "modelMatrix.column(i).x()" << std::endl;*/
 
         m_bfProgram.bind();
         m_bfProgram.setUniformValue("mvp", m_vp*modelMatrix);
@@ -71,7 +77,13 @@ void VolumetricRenderer::render()
         m_sampleProgram.setUniformValue("windowSize", framebufferObject()->size());
         m_sampleProgram.setUniformValue("voxels", 0);
         m_sampleProgram.setUniformValue("backfaces", 1);
-        m_sampleProgram.setUniformValue("myColor", m_color);
+        m_sampleProgram.setUniformValue("myColor", QVector3D(m_color.x(), m_color.y(), m_color.z()));
+
+          std::cout << "start" <<std::endl;
+        std::cout << m_color.x() <<std::endl;
+        std::cout << m_color.y() <<std::endl;
+        std::cout << m_color.z() <<std::endl;
+          std::cout <<"end" <<std::endl;
 
         m_voxels->bind(0);
 
@@ -137,5 +149,8 @@ void VolumetricRenderer::synchronize(QQuickFramebufferObject * input)
     }
 
     m_color = view->color();
+    std::cout << m_color.x() <<std::endl;
+    std::cout << m_color.y() <<std::endl;
+    std::cout << m_color.z() <<std::endl;
 }
 

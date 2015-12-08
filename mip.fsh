@@ -29,5 +29,5 @@ void main(void)
     for(float x = 0; x < 1; x+=0.001) {
         density = combineDensity(density, getDensity(frontFace, backFace, x));
     }
-    color = vec4(vec3(density), 1);
+    color = vec4(vec3(density * myColor), 1);
 }
