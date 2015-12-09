@@ -41,7 +41,7 @@ void VolumetricRenderer::render()
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 
-    glFrontFace(GL_CCW);
+    glFrontFace(GL_CW);
 
     glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -141,8 +141,8 @@ void VolumetricRenderer::synchronize(QQuickFramebufferObject * input)
         m_voxels->bind();
         m_voxels->setSize(volume->width(), volume->height(), volume->depth());
         m_voxels->setFormat(QOpenGLTexture::R32F);
-        m_voxels->setMinificationFilter(QOpenGLTexture::LinearMipMapNearest);
-        m_voxels->setMagnificationFilter(QOpenGLTexture::LinearMipMapNearest);
+        m_voxels->setMinificationFilter(QOpenGLTexture::LinearMipMapLinear);
+        m_voxels->setMagnificationFilter(QOpenGLTexture::LinearMipMapLinear);
         m_voxels->allocateStorage(QOpenGLTexture::Red, QOpenGLTexture::Float32);
 
         QOpenGLPixelTransferOptions transfer;

@@ -12,8 +12,10 @@ in vec3 position;
 
 out vec4 color;
 
-float combineDensity(float front, float back) {
-    return max(front, back);
+vec4 combineColor(vec4 front, vec4 back) {
+    float alpha = front.a+(1-front.a)*back.a;
+    vec3 color = front.rgb+back.rgb*(1-front.a);
+    return vec4(color, alpha);
 }
 
 float getDensity(vec3 frontFace, vec3 backFace, float distance) {
@@ -21,11 +23,19 @@ float getDensity(vec3 frontFace, vec3 backFace, float distance) {
     return texture(voxels, position).r;
 }
 
-vec4 getColor(vec3 colorA, float alphaA, vec3 colorB, float alphaB) {
-    vec3 colorC = vec3(0.0, 0.0, 0.0);
-    float alphaC = alphaA + (1-alphaA) * alphaB;
-    colorC = 1/alphaC* (alphaA * colorA + (1-alphaA) * alphaB * colorB);
-    return vec4(vec3(colorC), alphaC);
+vec4 densityToColor(float density) {
+    float alpha = density*0.01;
+    vec3 color = vec3(0,0,1);
+    if(density < 0.1) {
+        alpha = 0;
+    } else if(density < 0.3) {
+        color = myColor1;
+    } else if(density < 0.55) {
+        color = myColor2;
+    } else {
+        color = myColor3;
+    }
+    return vec4(color*alpha, alpha);
 }
 
 void main(void)
@@ -34,23 +44,10 @@ void main(void)
     vec3 frontFace = position+vec3(0.5);
     vec3 backFace = texture(backfaces, pixelPos).xyz;
 
-    vec4 colorC = vec4(0.0, 0.0, 0.0, 0.0);
-     vec3 lastColor = vec3(0.0, 0.0, 0.0);
-    float density = 0.0;
-    float lastAlpha = 0.0;
-    for(float x = 0; x < 1; x+=0.05) {
-        density = combineDensity(density, getDensity(frontFace, backFace, x));
-        if (density < 0.1) {
-          colorC = vec4(lastColor, 1);
-        } else if (density < 0.45 ) {
-            colorC = vec4(getColor(myColor1, density, lastColor, lastAlpha));
-        } else if (density < 0.5) {
-             colorC = vec4(getColor(myColor2, density, lastColor, lastAlpha));
-        } else {
-            colorC = vec4(getColor(myColor3, density, lastColor, lastAlpha));
-        }
-        lastAlpha = colorC.a;
-        lastColor = colorC.rgb;
+    vec4 incColor = vec4(0);
+    for(float x = 0; x < 1; x+=0.001) {
+        vec4 newColor = densityToColor(getDensity(frontFace, backFace, x));
+        incColor = combineColor(incColor, newColor);
     }
-    color = colorC;
+    color = vec4(incColor.rgb*incColor.a, incColor.a);
 }
