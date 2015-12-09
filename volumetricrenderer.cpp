@@ -74,7 +74,7 @@ void VolumetricRenderer::render()
             m_sampleProgram.setUniformValue("windowSize", framebufferObject()->size());
             m_sampleProgram.setUniformValue("voxels", 0);
             m_sampleProgram.setUniformValue("backfaces", 1);
-            m_sampleProgram.setUniformValue("myColor", QVector3D(m_color.x(), m_color.y(), m_color.z()));
+            m_sampleProgram.setUniformValue("myColor", QVector3D(m_color1.x(), m_color1.y(), m_color1.z()));
         } else {
             m_alphaProgram.bind();
             m_alphaProgram.setUniformValue("mvp", m_vp*modelMatrix);
@@ -82,7 +82,9 @@ void VolumetricRenderer::render()
             m_alphaProgram.setUniformValue("windowSize", framebufferObject()->size());
             m_alphaProgram.setUniformValue("voxels", 0);
             m_alphaProgram.setUniformValue("backfaces", 1);
-            m_alphaProgram.setUniformValue("myColor", QVector3D(m_color.x(), m_color.y(), m_color.z()));
+            m_alphaProgram.setUniformValue("myColor1", QVector3D(m_color1.x(), m_color1.y(), m_color1.z()));
+            m_alphaProgram.setUniformValue("myColor2", QVector3D(m_color2.x(), m_color2.y(), m_color2.z()));
+            m_alphaProgram.setUniformValue("myColor3", QVector3D(m_color3.x(), m_color3.y(), m_color3.z()));
         }
         m_voxels->bind(0);
 
@@ -151,7 +153,9 @@ void VolumetricRenderer::synchronize(QQuickFramebufferObject * input)
         m_voxels->release();
     }
 
-    m_color = view->color();
+    m_color1 = view->color1();
+    m_color2 = view->color2();
+    m_color3 = view->color3();
     m_useMIP = view->useMIP();
 }
 
