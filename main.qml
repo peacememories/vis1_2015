@@ -24,6 +24,19 @@ ApplicationWindow {
                 onTriggered: Qt.quit();
             }
         }
+
+        Menu {
+            title: qsTr("&Shader")
+            MenuItem {
+                text: qsTr("&MIP")
+                onTriggered: volView.setUseMIP(true)
+            }
+            MenuItem {
+                text: qsTr("&Alpha")
+                onTriggered: volView.setUseMIP(false)
+            }
+
+        }
     }
 
     VolumetricView {

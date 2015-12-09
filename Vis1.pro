@@ -35,4 +35,6 @@ DISTFILES += \
     cube.vsh \
     cube.fsh \
     mip.vsh \
-    mip.fsh
+    mip.fsh \
+    alpha.vsh \
+    alpha.fsh

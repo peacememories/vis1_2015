@@ -16,6 +16,7 @@ public:
     Q_PROPERTY(QVector3D viewDirection READ viewDirection WRITE setViewDirection)
     Q_PROPERTY(QVector3D viewPosition READ viewPosition WRITE setViewPosition)
     Q_PROPERTY(QVector4D color READ color WRITE setColor)
+    Q_PROPERTY(bool useMIP READ useMIP WRITE setUseMIP)
 
     VolumetricView();
     Renderer *createRenderer() const;
@@ -26,9 +27,11 @@ public:
     QVector3D viewPosition() const;
     void setViewPosition(const QVector3D pos);
     QVector4D color() const;
+    bool useMIP() const;
     Q_INVOKABLE void setRed(float colR);
     Q_INVOKABLE void setGreen(float colG);
     Q_INVOKABLE void setBlue(float colB);
+    Q_INVOKABLE void setUseMIP(bool MIP);
     QSharedPointer<const Volume> volume() const;
 public slots:
     void loadFile(QUrl);
@@ -42,6 +45,7 @@ private:
     QVector3D m_viewDirection;
     QVector3D m_viewPosition;
     QVector4D m_color;
+    bool m_useMIP;
 private slots:
 };
 

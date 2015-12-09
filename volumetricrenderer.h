@@ -38,12 +38,14 @@ private:
     GLMesh m_glMesh;
     QOpenGLShaderProgram m_bfProgram;
     QOpenGLShaderProgram m_sampleProgram;
+    QOpenGLShaderProgram m_alphaProgram;
 
 
     std::unique_ptr<QOpenGLFramebufferObject> m_backfaceBuffer;
 
     QMatrix4x4 m_vp;
     QVector4D m_color;
+    bool m_useMIP = true;
 
     QSharedPointer<QOpenGLTexture> m_voxels;
 };

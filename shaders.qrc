@@ -4,5 +4,7 @@
         <file>cube.vsh</file>
         <file>mip.vsh</file>
         <file>mip.fsh</file>
+        <file>alpha.fsh</file>
+        <file>alpha.vsh</file>
     </qresource>
 </RCC>
