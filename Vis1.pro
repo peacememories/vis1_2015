@@ -37,4 +37,6 @@ DISTFILES += \
     mip.vsh \
     mip.fsh \
     alpha.vsh \
-    alpha.fsh
+    alpha.fsh \
+    firsthit.vsh \
+    firsthit.fsh

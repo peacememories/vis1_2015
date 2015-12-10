@@ -126,15 +126,15 @@ void  VolumetricView::setBlue3(float colB)
     setColor3(m_color3);
 }
 
-void VolumetricView::setUseMIP(bool MIP)
+void VolumetricView::setShader(int shader)
 {
-    m_useMIP = MIP;
+    m_useShader = shader;
     update();
 }
 
-bool VolumetricView::useMIP() const
+int VolumetricView::useShader() const
 {
-    return m_useMIP;
+    return m_useShader;
 }
 
 QSharedPointer<const Volume> VolumetricView::volume() const
@@ -151,6 +151,17 @@ void VolumetricView::loadFile(QUrl url)
     update();
 }
 
+ float VolumetricView::thFirsthit() const
+ {
+     return m_thFirsthit;
+ }
+
+ void VolumetricView::setTh(float th)
+ {
+     m_thFirsthit = th;
+     update();
+ }
+
 void VolumetricView::setSampling(float newRate)
 {
     m_sampling = newRate;
@@ -161,4 +172,3 @@ void VolumetricView::setSampling(float newRate)
 {
     return m_sampling;
 }
-

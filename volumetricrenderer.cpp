@@ -33,6 +33,10 @@ VolumetricRenderer::VolumetricRenderer()
     m_alphaProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/alpha.vsh");
     m_alphaProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/alpha.fsh");
     m_alphaProgram.link();
+
+    m_firsthitProgram.addShaderFromSourceFile(QOpenGLShader::Vertex, ":/firsthit.vsh");
+    m_firsthitProgram.addShaderFromSourceFile(QOpenGLShader::Fragment, ":/firsthit.fsh");
+    m_firsthitProgram.link();
 }
 
 void VolumetricRenderer::render()
@@ -67,7 +71,7 @@ void VolumetricRenderer::render()
         glDrawElements(GL_TRIANGLES, m_glMesh.size(), GL_UNSIGNED_INT, 0);
         m_backfaceBuffer->release();
 
-        if (m_useMIP) {
+        if (m_useShader == 1) {
             m_sampleProgram.bind();
             m_sampleProgram.setUniformValue("mvp", m_vp*modelMatrix);
             m_sampleProgram.setUniformValue("mm", modelMatrix);
@@ -76,9 +80,7 @@ void VolumetricRenderer::render()
             m_sampleProgram.setUniformValue("backfaces", 1);
             m_sampleProgram.setUniformValue("myColor", QVector3D(m_color1.x(), m_color1.y(), m_color1.z()));
             m_sampleProgram.setUniformValue("samplingRate", m_sampling);
-            m_sampleProgram.setUniformValue("viewDirection", m_viewDirection);
-            std::cout << m_viewDirection.x() << ", " << m_viewDirection.y() << ", " << m_viewDirection.z() << std::endl;
-        } else {
+        } else if (m_useShader == 2) {
             m_alphaProgram.bind();
             m_alphaProgram.setUniformValue("mvp", m_vp*modelMatrix);
             m_alphaProgram.setUniformValue("mm", modelMatrix);
@@ -88,7 +90,27 @@ void VolumetricRenderer::render()
             m_alphaProgram.setUniformValue("myColor1", QVector3D(m_color1.x(), m_color1.y(), m_color1.z()));
             m_alphaProgram.setUniformValue("myColor2", QVector3D(m_color2.x(), m_color2.y(), m_color2.z()));
             m_alphaProgram.setUniformValue("myColor3", QVector3D(m_color3.x(), m_color3.y(), m_color3.z()));
+        } else if (m_useShader == 3) {
+            m_firsthitProgram.bind();
+            m_firsthitProgram.setUniformValue("mvp", m_vp*modelMatrix);
+            m_firsthitProgram.setUniformValue("m", modelMatrix);
+            m_firsthitProgram.setUniformValue("windowSize", framebufferObject()->size());
+            m_firsthitProgram.setUniformValue("voxels", 0);
+            m_firsthitProgram.setUniformValue("backfaces", 1);
+            m_firsthitProgram.setUniformValue("myColor", QVector3D(m_color1.x(), m_color1.y(), m_color1.z()));
+            m_firsthitProgram.setUniformValue("samplingRate", m_sampling);
+            m_firsthitProgram.setUniformValue("threshold", m_thFirsthit);
+        } else {
+            m_sampleProgram.bind();
+            m_sampleProgram.setUniformValue("mvp", m_vp*modelMatrix);
+            m_sampleProgram.setUniformValue("mm", modelMatrix);
+            m_sampleProgram.setUniformValue("windowSize", framebufferObject()->size());
+            m_sampleProgram.setUniformValue("voxels", 0);
+            m_sampleProgram.setUniformValue("backfaces", 1);
+            m_sampleProgram.setUniformValue("myColor", QVector3D(m_color1.x(), m_color1.y(), m_color1.z()));
+            m_sampleProgram.setUniformValue("samplingRate", m_sampling);
         }
+
         m_voxels->bind(0);
 
         framebufferObject()->bind();
@@ -99,7 +121,7 @@ void VolumetricRenderer::render()
         glDrawElements(GL_TRIANGLES, m_glMesh.size(), GL_UNSIGNED_INT, 0);
 
         m_glMesh.release();
-        if (m_useMIP) {
+        if (m_useShader) {
             m_sampleProgram.release();
         } else {
             m_alphaProgram.release();
@@ -135,7 +157,6 @@ void VolumetricRenderer::synchronize(QQuickFramebufferObject * input)
     m_vp.translate(view->viewPosition().x(), view->viewPosition().y(), 0.0);
     m_vp.lookAt(view->viewDirection() ,  QVector3D(0,0,0), QVector3D(0,1,0));
 
-    m_viewDirection = view->viewDirection();
     //Reload voxel data
     if(view->volumeId() != m_volumeId && !view->volume().isNull()) {
         m_volumeId = view->volumeId();
@@ -160,7 +181,8 @@ void VolumetricRenderer::synchronize(QQuickFramebufferObject * input)
     m_color1 = view->color1();
     m_color2 = view->color2();
     m_color3 = view->color3();
-    m_useMIP = view->useMIP();
+    m_useShader = view->useShader();
     m_sampling= view->sampling();
+    m_thFirsthit= view->thFirsthit();
 }
 

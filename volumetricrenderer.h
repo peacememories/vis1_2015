@@ -39,17 +39,20 @@ private:
     QOpenGLShaderProgram m_bfProgram;
     QOpenGLShaderProgram m_sampleProgram;
     QOpenGLShaderProgram m_alphaProgram;
+    QOpenGLShaderProgram m_firsthitProgram;
 
 
     std::unique_ptr<QOpenGLFramebufferObject> m_backfaceBuffer;
 
     QMatrix4x4 m_vp;
+    QMatrix4x4 m_v;
     QVector3D m_viewDirection;
     QVector4D m_color1;
     QVector4D m_color2;
     QVector4D m_color3;
-    bool m_useMIP = true;
+    int m_useShader;
     float m_sampling;
+    float m_thFirsthit;
 
     QSharedPointer<QOpenGLTexture> m_voxels;
 };

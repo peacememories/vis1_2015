@@ -6,5 +6,7 @@
         <file>mip.fsh</file>
         <file>alpha.fsh</file>
         <file>alpha.vsh</file>
+        <file>firsthit.fsh</file>
+        <file>firsthit.vsh</file>
     </qresource>
 </RCC>
