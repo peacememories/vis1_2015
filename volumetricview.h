@@ -19,6 +19,7 @@ public:
     Q_PROPERTY(QVector4D color2 READ color2 WRITE setColor2)
     Q_PROPERTY(QVector4D color3 READ color3 WRITE setColor3)
     Q_PROPERTY(bool useMIP READ useMIP WRITE setUseMIP)
+    //Q_PROPERTY(float m_sampling READ m_sampling WRITE setSampling)
 
     VolumetricView();
     Renderer *createRenderer() const;
@@ -31,7 +32,8 @@ public:
     QVector4D color1() const;
     QVector4D color2() const;
     QVector4D color3() const;
-    bool useMIP() const;
+    float sampling() const;
+    Q_INVOKABLE bool useMIP() const;
     Q_INVOKABLE void setRed1(float colR);
     Q_INVOKABLE void setGreen1(float colG);
     Q_INVOKABLE void setBlue1(float colB);
@@ -42,6 +44,7 @@ public:
     Q_INVOKABLE void setGreen3(float colG);
     Q_INVOKABLE void setBlue3(float colB);
     Q_INVOKABLE void setUseMIP(bool MIP);
+    Q_INVOKABLE void setSampling(float newRate);
     QSharedPointer<const Volume> volume() const;
 public slots:
     void loadFile(QUrl);
@@ -60,6 +63,7 @@ private:
     QVector4D m_color2;
     QVector4D m_color3;
     bool m_useMIP;
+    float m_sampling;
 private slots:
 };
 

@@ -44,10 +44,12 @@ private:
     std::unique_ptr<QOpenGLFramebufferObject> m_backfaceBuffer;
 
     QMatrix4x4 m_vp;
+    QVector3D m_viewDirection;
     QVector4D m_color1;
     QVector4D m_color2;
     QVector4D m_color3;
     bool m_useMIP = true;
+    float m_sampling;
 
     QSharedPointer<QOpenGLTexture> m_voxels;
 };

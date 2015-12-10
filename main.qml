@@ -185,14 +185,17 @@ ApplicationWindow {
             }
 
             Slider {
-                id: slider1B1
+                id: samplingBar
                 x: 354
                 y: 26
                 width: 179
                 height: 22
-                minimumValue: 0.01
+                maximumValue: 0.1
+                minimumValue: 0.001
                 value: 0.05
-                stepSize: 0.01
+                stepSize: 0.001
+
+                onValueChanged: volView.setSampling(samplingBar.value)
             }
         }
     }

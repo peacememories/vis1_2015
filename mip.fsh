@@ -5,6 +5,8 @@ uniform sampler3D voxels;
 uniform mat4 mm;
 uniform vec2 windowSize;
 uniform vec3 myColor;
+uniform float samplingRate;
+
 
 in vec3 position;
 
@@ -26,7 +28,7 @@ void main(void)
     vec3 backFace = texture(backfaces, pixelPos).xyz;
 
     float density = 0.0;
-    for(float x = 0; x < 1; x+=0.001) {
+    for(float x = 0; x < 1; x+=samplingRate) {
         density = combineDensity(density, getDensity(frontFace, backFace, x));
     }
     color = vec4(vec3(density * myColor), 1);

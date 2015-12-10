@@ -151,3 +151,14 @@ void VolumetricView::loadFile(QUrl url)
     update();
 }
 
+void VolumetricView::setSampling(float newRate)
+{
+    m_sampling = newRate;
+    update();
+}
+
+ float VolumetricView::sampling() const
+{
+    return m_sampling;
+}
+

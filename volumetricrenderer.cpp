@@ -75,6 +75,9 @@ void VolumetricRenderer::render()
             m_sampleProgram.setUniformValue("voxels", 0);
             m_sampleProgram.setUniformValue("backfaces", 1);
             m_sampleProgram.setUniformValue("myColor", QVector3D(m_color1.x(), m_color1.y(), m_color1.z()));
+            m_sampleProgram.setUniformValue("samplingRate", m_sampling);
+            m_sampleProgram.setUniformValue("viewDirection", m_viewDirection);
+            std::cout << m_viewDirection.x() << ", " << m_viewDirection.y() << ", " << m_viewDirection.z() << std::endl;
         } else {
             m_alphaProgram.bind();
             m_alphaProgram.setUniformValue("mvp", m_vp*modelMatrix);
@@ -132,6 +135,7 @@ void VolumetricRenderer::synchronize(QQuickFramebufferObject * input)
     m_vp.translate(view->viewPosition().x(), view->viewPosition().y(), 0.0);
     m_vp.lookAt(view->viewDirection() ,  QVector3D(0,0,0), QVector3D(0,1,0));
 
+    m_viewDirection = view->viewDirection();
     //Reload voxel data
     if(view->volumeId() != m_volumeId && !view->volume().isNull()) {
         m_volumeId = view->volumeId();
@@ -157,5 +161,6 @@ void VolumetricRenderer::synchronize(QQuickFramebufferObject * input)
     m_color2 = view->color2();
     m_color3 = view->color3();
     m_useMIP = view->useMIP();
+    m_sampling= view->sampling();
 }
 
